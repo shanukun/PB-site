@@ -1,7 +1,8 @@
 from __future__ import print_function
+import io
 import pickle
 import os.path
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -32,44 +33,42 @@ def login_with_google():
     return service
 
 
-def create_folder(service):
+def create_file(service, file_name):
     file_metadata = {
-        'name': 'passback2312',
-        'mimeType': 'application/vnd.google-apps.folder'
-    }
-
-    file = service.files().create(body=file_metadata, fields='id').execute()
-
-    folderId = file.get('id')
-    print('Folder ID: %s' % folderId)
-    create_file(service)
-
-
-def create_file(service):
-    file_metadata = {
-        'name': 'enc_pass.json',
+        'name': file_name,
         'parents': ['appDataFolder']
     }
-
-    media = MediaFileUpload('./env_pass.json',
-                            mimetype='application/json', resumable=True)
+    media = MediaFileUpload(file_name,
+                            mimetype='application/json',
+                            resumable=True)
     file = service.files().create(body=file_metadata,
-                                  media_body=media, fields='id').execute()
+                                  media_body=media,
+                                  fields='id').execute()
 
-    print ('File ID: %s ' % file.get('id'))
+    print ('File Created ID: %s ' % file.get('id'))
 
 
-def listFile(service):
+def download_file(service, file_id):
+    request = service.files().get_media(fileId=file_id)
+    fh = io.BytesIO()
+    # fh = io.FileIO('enc.json', mode='wb')
+    downloader = MediaIoBaseDownload(fh, request)
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+        print('Download %d%%.' % int(status.progress() * 100))
+
+
+def list_file(service):
     # Call the Drive v3 API
     response = service.files().list(spaces='appDataFolder',
                                     fields='nextPageToken, files(id, name)',
                                     pageSize=10).execute()
-    for file in response.get('files', []):
-        # Process change
-        print('Found file: %s (%s)' % (file.get('name'), file.get('id')))
+    file = response.get('files', [])[0]
+    # Process change
+    print('Found File: %s (%s)' % (file.get('name'), file.get('id')))
 
 
-if __name__ == '__main__':
-    drive_service = login_with_google()
-    create_file(drive_service)
-    listFile(drive_service)
+def delete_file(service, file_id):
+    service.files().delete(fileId=file_id).execute()
+    print('Deleted: %s' % (file_id))
