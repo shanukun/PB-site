@@ -1,4 +1,5 @@
 token.pickle
-credentials.json
-env_pass.json
+*.json
 /env
+/.vscode
+/__pycache__
