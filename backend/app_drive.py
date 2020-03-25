@@ -22,6 +22,7 @@ class AppDrive():
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
                 creds = pickle.load(token)
+
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
@@ -49,11 +50,12 @@ class AppDrive():
                                            fields='id').execute()
 
         print ('File Created ID: %s ' % file.get('id'))
+        self.delete_file()
 
-    def download_file(self):
+    def _download_file(self):
         request = self.service.files().get_media(fileId=self.app_file_id)
-        fh = io.BytesIO()
-        # fh = io.FileIO('enc.json', mode='wb')
+        fh = io.FileIO('enc.json', mode='wb')
+
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
@@ -62,16 +64,16 @@ class AppDrive():
         return done
 
     def list_file(self):
-        # Call the Drive v3 API
         response = self.service.files().list(spaces='appDataFolder',
                                              fields='nextPageToken, files(id, name)',
                                              pageSize=10).execute()
         file = response.get('files', [])[0]
+
         # Process change
         print('Found File: %s (%s)' % (file.get('name'), file.get('id')))
         return file.get('id')
 
-    def delete_file(self):
+    def _delete_file(self):
         try:
             self.service.files().delete(fileId=self.app_file_id).execute()
             print('Deleted: %s' % (self.app_file_id))
