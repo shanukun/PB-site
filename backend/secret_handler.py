@@ -7,7 +7,6 @@ class SecretHandler():
     def __init__(self, key):
         self.data = {}
         self.crypter = crypto_lib.AESCipher(key)
-        self.read_file()
 
     def read_file(self):
         with open('enc.json') as f:
