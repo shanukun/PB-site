@@ -15,9 +15,9 @@ class AppDrive():
 
     def __init__(self):
         self.app_file_id = None
-        self.service = None
+        self.service = self._login_with_google()
 
-    def login_with_google(self):
+    def _login_with_google(self):
         creds = None
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
@@ -35,9 +35,9 @@ class AppDrive():
             with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
 
-        self.service = build('drive', 'v3', credentials=creds)
+        return build('drive', 'v3', credentials=creds)
 
-    def create_file(self, file_name):
+    def create_file(self, file_name='./enc.json'):
         file_metadata = {
             'name': file_name,
             'parents': ['appDataFolder']
@@ -50,7 +50,7 @@ class AppDrive():
                                            fields='id').execute()
 
         print ('File Created ID: %s ' % file.get('id'))
-        self.delete_file()
+        self._delete_file()
 
     def _download_file(self):
         request = self.service.files().get_media(fileId=self.app_file_id)
@@ -63,7 +63,7 @@ class AppDrive():
             print('Download %d%%.' % int(status.progress() * 100))
         return done
 
-    def list_file(self):
+    def get_file(self):
         response = self.service.files().list(spaces='appDataFolder',
                                              fields='nextPageToken, files(id, name)',
                                              pageSize=10).execute()
@@ -71,7 +71,8 @@ class AppDrive():
 
         # Process change
         print('Found File: %s (%s)' % (file.get('name'), file.get('id')))
-        return file.get('id')
+        self.app_file_id = file.get('id')
+        self._download_file()
 
     def _delete_file(self):
         try:
