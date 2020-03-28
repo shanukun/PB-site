@@ -15,7 +15,8 @@ class AppDrive():
 
     def __init__(self):
         self.app_file_id = None
-        self.service = self._login_with_google()
+        self.service = None
+        self._login_with_google()
 
     def _login_with_google(self):
         creds = None
@@ -35,7 +36,7 @@ class AppDrive():
             with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
 
-        return build('drive', 'v3', credentials=creds)
+        self.service = build('drive', 'v3', credentials=creds)
 
     def create_file(self, file_name='./enc.json'):
         file_metadata = {
@@ -81,3 +82,6 @@ class AppDrive():
         except:
             return False
         return True
+
+    def is_loggedIn():
+        return self.service
