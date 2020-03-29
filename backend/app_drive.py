@@ -83,5 +83,5 @@ class AppDrive():
             return False
         return True
 
-    def is_loggedIn():
+    def is_loggedIn(self):
         return self.service
