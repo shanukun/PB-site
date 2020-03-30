@@ -11,6 +11,7 @@ class SecretHandler():
     def read_file(self):
         with open('enc.json') as f:
             self.data = json.load(f)
+        return self.data
 
     def write_data(self, new_data):
         site = new_data['site'].lower()

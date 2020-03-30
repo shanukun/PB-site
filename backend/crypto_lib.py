@@ -20,7 +20,7 @@ class AESCipher():
         self.key = self._get_private_key(key)
 
     def _get_private_key(self, password):
-        salt = b'cramerisnot234'
+        salt = b'hkjF(F*YF^7KH#'
         kdf = PBKDF2(password, salt, 64, 1000)
         key = kdf[:32]
         return key

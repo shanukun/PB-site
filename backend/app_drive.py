@@ -17,6 +17,7 @@ class AppDrive():
         self.app_file_id = None
         self.service = None
         self._login_with_google()
+        self._get_file()
 
     def _login_with_google(self):
         creds = None
@@ -64,7 +65,7 @@ class AppDrive():
             print('Download %d%%.' % int(status.progress() * 100))
         return done
 
-    def get_file(self):
+    def _get_file(self):
         response = self.service.files().list(spaces='appDataFolder',
                                              fields='nextPageToken, files(id, name)',
                                              pageSize=10).execute()

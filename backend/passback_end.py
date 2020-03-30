@@ -19,7 +19,7 @@ class Backend():
 
     def get_data(self, key):
         self.sh = SecretHandler(key)
-        self.sh.read_file()
+        self.data = self.sh.read_file()
         return self.data
 
     def _logger(self, msg):
