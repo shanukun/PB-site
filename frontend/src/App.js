@@ -13,7 +13,12 @@ function App() {
 			<Switch>
 				<Route exact path="/" render={props => <LoginScreen {...props} setLogged={setLogged} />} />
 				<Route exact path="/unauth" component={Unauthorized} />
-				<ProtectedRoute exat path='/password' isLogged={isLogged} component={PasswordScreen} />
+				<ProtectedRoutePasswordScreen 
+					exat path='/password'
+					isLogged={isLogged}
+					component={PasswordScreen} 
+				/>
+				<Route exat path='/dashboard' component={Dashboard} />
 			</Switch>
 		</div>
 	);
@@ -25,15 +30,15 @@ function LoginScreen(props) {
 
 	const getJsonData = async () => {
 		const resp = await fetch(API + "gdrivelogin");
-		resp.json().then(data => {
-			if (data["login"] === true) {
-				props.setLogged(true)
-				setShowMsg(false);
-				props.history.push('/password')
-			} else {
-				setMsg('Error.');
-			}
-		});
+		const data = await resp.json();
+		console.log(data);
+		if (data["login"] === true) {
+			props.setLogged(true)
+			setShowMsg(false);
+			props.history.push('/password')
+		} else {
+			setMsg('Error.');
+		}
 	}
 
 	const handleClick = (e) => {
@@ -51,18 +56,45 @@ function LoginScreen(props) {
 	);
 }
 
-function PasswordScreen() {
+function PasswordScreen(props) {
 	const [password, setPassword] = useState('');
+	const [showMsg, setShowMsg] = useState(false);
+	const [msg, setMsg] = useState('');
+
+	const sendRequest = async () => {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json'},
+			body: JSON.stringify({ key: password })
+		};
+		const resp = await fetch(API + 'passkey', requestOptions)
+		const data = await resp.json();
+		if (data['recieved']) {
+			props.history.push('/dashboard')
+		} else {
+			setMsg('Error.');
+		}
+	}
 
 	const handleClick = (e) => {
 		e.preventDefault();
+		setShowMsg(true);
+		if (password) {
+			sendRequest();
+			setMsg('Wait...')
+		} else {
+			setMsg('Empty Password.')
+		}
 	}
 
 	return (
 		<div>
 			<label>Password:</label><br />
-			<input type="password" className="keyPassword" id="inputPassword" /><br />
+			<input type="password" className="keyPassword" id="inputPassword" 
+				   onChange={e => setPassword(e.target.value)} /><br />
+
 			<button onClick={handleClick}>Enter</button>
+			{ showMsg ? msg : null }
 		</div>
 
 	);
@@ -85,7 +117,7 @@ function Unauthorized()  {
 	);
 }
 
-const ProtectedRoute = ({component: Component, isLogged, ...rest}) => {
+const ProtectedRoutePasswordScreen = ({component: Component, isLogged, ...rest}) => {
 	return (
 		<Route {...rest} render={
 			props =>  {
@@ -105,6 +137,5 @@ const ProtectedRoute = ({component: Component, isLogged, ...rest}) => {
 		} />
 	);
 }
-
 
 export default App;
