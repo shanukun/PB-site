@@ -79,7 +79,7 @@ func (r *SqliteRepository) InsertNew(cred Credential) error {
 	return nil
 }
 
-// NewSqliteRepository initalize database
+// NewSqliteRepository initialize database
 func NewSqliteRepository(filename string) *SqliteRepository {
 	db, err := sql.Open("sqlite3", filename)
 	if err != nil {
