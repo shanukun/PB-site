@@ -7,10 +7,12 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// SqliteRepository using struct for easy implementation
 type SqliteRepository struct {
 	db *sql.DB
 }
 
+// FindAll get list of creds with encrypted pass
 func (r *SqliteRepository) FindAll() []Credential {
 	stmt, err := r.db.Prepare(`
 		select * from creds;
@@ -39,6 +41,7 @@ func (r *SqliteRepository) FindAll() []Credential {
 	return creds
 }
 
+// FindPass find password given domain and username
 func (r *SqliteRepository) FindPass(cred Credential) string {
 	stmt, err := r.db.Prepare(`
 		select password from creds where domain=? and username=?
@@ -57,6 +60,7 @@ func (r *SqliteRepository) FindPass(cred Credential) string {
 	return pass
 }
 
+// InsertNew insert new credentials
 func (r *SqliteRepository) InsertNew(cred Credential) error {
 	stmt, err := r.db.Prepare(`
 		insert into creds (domain, username, password) values (?, ?, ?)
@@ -75,6 +79,7 @@ func (r *SqliteRepository) InsertNew(cred Credential) error {
 	return nil
 }
 
+// NewSqliteRepository initalize database
 func NewSqliteRepository(filename string) *SqliteRepository {
 	db, err := sql.Open("sqlite3", filename)
 	if err != nil {
