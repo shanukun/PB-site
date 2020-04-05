@@ -3,6 +3,7 @@ package main
 type Credential struct {
 	CredID   int64  `json:"cred_id"`
 	Domain   string `json:"domain"`
-	Username string `json:"username"`
+	Key      string `json:"key"`
 	Password string `json:"password"`
+	Username string `json:"username"`
 }
