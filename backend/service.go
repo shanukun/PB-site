@@ -15,11 +15,13 @@ type ServiceImpl struct {
 	credRepo CredRepository
 }
 
+// GetAll method impl to get all credential
 func (s *ServiceImpl) GetAll() []Credential {
 	creds := s.credRepo.FindAll()
 	return creds
 }
 
+// GetPass method impl to get password for a specific domain and username
 func (s *ServiceImpl) GetPass(cred Credential) string {
 	pass := s.credRepo.FindPass(cred)
 	c := &Crypter{cred.Key, pass}
@@ -27,6 +29,7 @@ func (s *ServiceImpl) GetPass(cred Credential) string {
 	return pass
 }
 
+// EnterNew method impl for adding new credential
 func (s *ServiceImpl) EnterNew(cred Credential) error {
 	c := &Crypter{cred.Key, cred.Password}
 	cred.Password, _ = c.Encrypt()

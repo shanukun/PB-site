@@ -1,5 +1,6 @@
 package main
 
+// Credential model for Credentials
 type Credential struct {
 	CredID   int64  `json:"cred_id"`
 	Domain   string `json:"domain"`

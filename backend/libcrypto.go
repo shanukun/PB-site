@@ -11,11 +11,13 @@ import (
 	"strings"
 )
 
+// Crypto interface for crypto method
 type Crypto interface {
 	Encrypt() (string, error)
 	Decrypt() (string, error)
 }
 
+// Crypter struct for crypto
 type Crypter struct {
 	key  string
 	text string
@@ -34,13 +36,13 @@ func removeBase64Padding(value string) string {
 	return strings.Replace(value, "=", "", -1)
 }
 
-func Pad(src []byte) []byte {
+func pad(src []byte) []byte {
 	padding := aes.BlockSize - len(src)%aes.BlockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(src, padtext...)
 }
 
-func Unpad(src []byte) ([]byte, error) {
+func unpad(src []byte) ([]byte, error) {
 	length := len(src)
 	unpadding := int(src[length-1])
 
@@ -51,6 +53,7 @@ func Unpad(src []byte) ([]byte, error) {
 	return src[:(length - unpadding)], nil
 }
 
+// Encrypt implementation of encryption method
 func (c *Crypter) Encrypt() (string, error) {
 	key := []byte(byteString(c.key))
 	text := c.text
@@ -59,19 +62,20 @@ func (c *Crypter) Encrypt() (string, error) {
 		return "", err
 	}
 
-	msg := Pad([]byte(text))
-	ciphertext := make([]byte, aes.BlockSize+len(msg))
-	iv := ciphertext[:aes.BlockSize]
+	msg := pad([]byte(text))
+	cipherText := make([]byte, aes.BlockSize+len(msg))
+	iv := cipherText[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		return "", err
 	}
 
 	cfb := cipher.NewCFBEncrypter(block, iv)
-	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(msg))
-	finalMsg := removeBase64Padding(base64.URLEncoding.EncodeToString(ciphertext))
+	cfb.XORKeyStream(cipherText[aes.BlockSize:], []byte(msg))
+	finalMsg := removeBase64Padding(base64.URLEncoding.EncodeToString(cipherText))
 	return finalMsg, nil
 }
 
+// Decrypt implementation of decryption method
 func (c *Crypter) Decrypt() (string, error) {
 	key := []byte(byteString(c.key))
 	text := c.text
@@ -95,7 +99,7 @@ func (c *Crypter) Decrypt() (string, error) {
 	cfb := cipher.NewCFBDecrypter(block, iv)
 	cfb.XORKeyStream(msg, msg)
 
-	unpadMsg, err := Unpad(msg)
+	unpadMsg, err := unpad(msg)
 	if err != nil {
 		return "", err
 	}
