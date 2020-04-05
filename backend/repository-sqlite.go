@@ -60,6 +60,10 @@ func (r *SqliteRepository) FindPass(cred Credential) string {
 	return pass
 }
 
+func (r *SqliteRepository) close() {
+	r.db.Close()
+}
+
 // InsertNew insert new credentials
 func (r *SqliteRepository) InsertNew(cred Credential) error {
 	stmt, err := r.db.Prepare(`
