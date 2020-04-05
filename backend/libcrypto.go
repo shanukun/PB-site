@@ -16,7 +16,7 @@ type Crypto interface {
 	Decrypt() (string, error)
 }
 
-type CryptoImpl struct {
+type Crypter struct {
 	key  string
 	text string
 }
@@ -51,7 +51,7 @@ func Unpad(src []byte) ([]byte, error) {
 	return src[:(length - unpadding)], nil
 }
 
-func (c *CryptoImpl) Encrypt() (string, error) {
+func (c *Crypter) Encrypt() (string, error) {
 	key := []byte(byteString(c.key))
 	text := c.text
 	block, err := aes.NewCipher(key)
@@ -72,7 +72,7 @@ func (c *CryptoImpl) Encrypt() (string, error) {
 	return finalMsg, nil
 }
 
-func (c *CryptoImpl) Decrypt() (string, error) {
+func (c *Crypter) Decrypt() (string, error) {
 	key := []byte(byteString(c.key))
 	text := c.text
 	block, err := aes.NewCipher(key)
