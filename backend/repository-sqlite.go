@@ -44,7 +44,7 @@ func (r *SqliteRepository) FindAll() []Credential {
 // FindPass find password given domain and username
 func (r *SqliteRepository) FindPass(cred Credential) string {
 	stmt, err := r.db.Prepare(`
-		select password from creds where domain=? and username=?
+		select password from creds where cred_id=? 
 	`)
 	if err != nil {
 		log.Fatal(err)
@@ -52,7 +52,7 @@ func (r *SqliteRepository) FindPass(cred Credential) string {
 	defer stmt.Close()
 
 	var pass string
-	err = stmt.QueryRow(cred.Domain, cred.Username).Scan(&pass)
+	err = stmt.QueryRow(cred.CredID).Scan(&pass)
 	if err != nil {
 		log.Fatal(err)
 	}
