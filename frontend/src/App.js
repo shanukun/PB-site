@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Store } from './Store';
 import Display from './Display';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
@@ -55,10 +55,10 @@ function App() {
 					<h1>PASSBACK</h1>
 				</div>
 				<div className="col-md-auto">
-					<button type="button" className="btn btn-outline-primary">Show</button>
-				</div>
-				<div className="col-md-auto">
-					<button type="button" className="btn btn-outline-primary">New</button>
+					<div className="btn-group">
+						<button type="button" className="btn btn-outline-primary">Home</button>
+						<button type="button" className="btn btn-primary">New</button>
+					</div>
 				</div>
 			</div>
 			<div className="input-group mb-3">
@@ -87,7 +87,7 @@ function App() {
 				</div>
 			</div>	
 			<Switch>
-				<Route exact path="/" render={props => <Display {...props} />} />
+				<Route exact path="/" render={props => <Display {...props} pass={key} />} />
 			</Switch>
 		</div>
 	);
