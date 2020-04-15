@@ -1,26 +1,34 @@
 import React from 'react';
 import { Store } from './Store';
 import Display from './Display';
+import New from './New';
 import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import './App.css';
 
 const API = "http://localhost:8000/api/";
 
-function App() {
-	const { state, dispatch } = React.useContext(Store);
+function App(props) {
+	const { dispatch } = React.useContext(Store);
 
 	const [key, setKey] = React.useState("");
 	const [keyLocked, setKeyLocked] = React.useState(false);
 	const [show, setShow] = React.useState(false);
-	const [showPop, setShowPop] = React.useState(false);
 
 	const handleGet = () => {
 		if (keyLocked) {
 			fetchData();
-		} else {
-			setShowPop(true);
 		}
 	}
+
+	const fetchData = async () => {
+		const data = await fetch(API);
+		const dataJson = await data.json();
+		console.log(dataJson);
+		dispatch({
+			type: 'FETCH',
+			payload: dataJson
+		});
+	};
 
 	const handleLock = () => {
 		setKeyLocked(!keyLocked);
@@ -38,16 +46,6 @@ function App() {
 		}
 	}
 
-	const fetchData = async () => {
-		const data = await fetch(API);
-		const dataJson = await data.json();
-		console.log(dataJson);
-		dispatch({
-			type: 'FETCH',
-			payload: dataJson
-		});
-	};
-
 	return (
 		<div className="container">
 			<div className="row mt-4">
@@ -55,10 +53,8 @@ function App() {
 					<h1>PASSBACK</h1>
 				</div>
 				<div className="col-md-auto">
-					<div className="btn-group">
-						<button type="button" className="btn btn-outline-primary">Home</button>
-						<button type="button" className="btn btn-primary">New</button>
-					</div>
+						<button type="button" className="btn btn-link"><Link to="/">Home</Link></button>
+						<button type="button" className="btn btn-link"><Link to="/new">New</Link></button>
 				</div>
 			</div>
 			<div className="input-group mb-3">
@@ -88,6 +84,7 @@ function App() {
 			</div>	
 			<Switch>
 				<Route exact path="/" render={props => <Display {...props} pass={key} />} />
+				<Route exact path="/new" render={props => <New {...props} pass={key} />} />
 			</Switch>
 		</div>
 	);
