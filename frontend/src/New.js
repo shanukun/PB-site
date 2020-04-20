@@ -1,4 +1,5 @@
 import React from 'react';
+import './New.css';
 
 const API = "http://localhost:8000/api/new";
 
@@ -33,8 +34,7 @@ function New(props) {
 	}
 
 	return (
-	<div>
-		<form>
+		<div className="form-container">
 			<div>
 				<label><strong>Domain</strong></label>
 				<div>
@@ -54,12 +54,13 @@ function New(props) {
 				</div>
 			</div>
 			<div>
+				<div></div>
 				<div>
 					<button type="button" onClick={handleClick}>Add New</button>
 				</div>
 			</div>
-		</form>	
-	</div>);
+		</div>
+	);
 }
 
 export default New;

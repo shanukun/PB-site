@@ -1,0 +1,19 @@
+.form-container {
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto auto auto;
+	row-gap: 10px;
+}
+
+.form-container div {
+	display: grid;
+	grid-template-columns: 100px 1fr;
+	grid-template-rows: auto;
+}
+
+.form-container div div {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto;
+
+}
