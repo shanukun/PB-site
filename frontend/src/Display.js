@@ -1,5 +1,6 @@
 import React from 'react';
 import { Store } from './Store';
+import './Display.css';
 
 const API = "http://localhost:8000/api/getpass";
 
@@ -64,29 +65,24 @@ function Display(props) {
 		<React.Fragment>
 			{ state.credentials.map((cred) => {
 				return (
-					<div>
+					<div className="display-container">
+						<div><strong>{cred.domain}</strong></div>
+						<div>{cred.username}</div>
 						<div>
-							<div>
-								<div><strong>{cred.domain}</strong></div>
-								<div>{cred.username}</div>
-								{/* <div>{ cred.password }</div> */}
-								<div>
-									{ passState.hasOwnProperty(cred.cred_id) ? 
-											passState[cred.cred_id]['show'] === true ? 
-												passState[cred.cred_id]['pass'] : 
-												cred.password : 
-											cred.password 
-									}
-								</div>
-								<div>
-									<ShowBtn id={cred.cred_id} togglePass={togglePass} />
-								</div>
-								<div>
-									<button type="button">
-										Copy
-									</button>
-								</div>
-							</div>
+							{ passState.hasOwnProperty(cred.cred_id) ? 
+									passState[cred.cred_id]['show'] === true ? 
+										passState[cred.cred_id]['pass'] : 
+										cred.password : 
+									cred.password 
+							}
+						</div>
+						<div>
+							<ShowBtn id={cred.cred_id} togglePass={togglePass} />
+						</div>
+						<div>
+							<button type="button">
+								Copy
+							</button>
 						</div>
 					</div>
 				);
