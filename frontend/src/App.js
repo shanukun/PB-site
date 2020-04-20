@@ -50,7 +50,7 @@ function App() {
 		<div className="passback-container">
 			<div className="title-container">
 				<div>
-					<h1>PASSBACK</h1>
+					<h2>PASSBACK</h2>
 				</div>
 				<div className="title-buttons">
 						<Link to="/">Home</Link>

@@ -6,6 +6,10 @@ body {
 	font-family: 'Anonymous Pro', monospace;
 }
 
+h2 {
+	margin: 0px;
+}
+
 .container {
 	width: 50%;
 	margin: auto;
@@ -15,6 +19,8 @@ body {
 	display: grid;
 	grid-template-columns: auto;
 	grid-template-rows: auto auto auto;
+	margin-top: 20px;
+	row-gap: 10px;
 }
 
 .title-container {
