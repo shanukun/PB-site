@@ -47,17 +47,17 @@ function App() {
 	}
 
 	return (
-		<div>
-			<div>
+		<div className="passback-container">
+			<div className="title-container">
 				<div>
 					<h1>PASSBACK</h1>
 				</div>
-				<div>
-						<button type="button"><Link to="/">Home</Link></button>
-						<button type="button"><Link to="/new">New</Link></button>
+				<div className="title-buttons">
+						<Link to="/">Home</Link>
+						<Link to="/new">New</Link>
 				</div>
 			</div>
-			<div>
+			<div className="key-container">
 				<div>
 					<button type="button" 
 							onClick={handleGet}>
@@ -79,10 +79,12 @@ function App() {
 					</button>
 				</div>
 			</div>	
-			<Switch>
-				<Route exact path="/" render={props => <Display {...props} pass={key} />} />
-				<Route exact path="/new" render={props => <New {...props} pass={key} />} />
-			</Switch>
+			<div>
+				<Switch>
+					<Route exact path="/" render={props => <Display {...props} pass={key} />} />
+					<Route exact path="/new" render={props => <New {...props} pass={key} />} />
+				</Switch>
+			</div>
 		</div>
 	);
 }

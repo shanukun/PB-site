@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Anonymous Pro', monospace;
+}
+
+.container {
+	width: 50%;
+	margin: auto;
+}
+
+.passback-container {
+	display: grid;
+	grid-template-columns: auto;
+	grid-template-rows: auto auto auto;
+}
+
+.title-container {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-rows: auto;
+	align-items: center;
+}
+
+.title-buttons {
+	justify-self: end;
+}
+
+.title-buttons a {
+	margin-left: 10px;
+	text-decoration: none;
+}
+
+.key-container {
+	display: grid;
+	grid-template-columns: auto auto 1fr auto;
+	grid-template-rows: auto;
+	justify-items: stretch;
+	align-items: center;
+}
