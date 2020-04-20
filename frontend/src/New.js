@@ -35,27 +35,27 @@ function New(props) {
 	return (
 	<div>
 		<form>
-			<div className="form-group row">
-				<label className="col-sm-2 col-form-label"><strong>Domain</strong></label>
-				<div className="col-sm-10">
-					<input type="text" className="form-control" value={domain} onChange={handleDomain} />
+			<div>
+				<label><strong>Domain</strong></label>
+				<div>
+					<input type="text" value={domain} onChange={handleDomain} />
 				</div>
 			</div>
-			<div className="form-group row">
-				<label className="col-sm-2 col-form-label"><strong>Username</strong></label>
-				<div className="col-sm-10">
-					<input type="text" className="form-control" value={username} onChange={handleUsername} />
+			<div>
+				<label><strong>Username</strong></label>
+				<div>
+					<input type="text" value={username} onChange={handleUsername} />
 				</div>
 			</div>
-			<div className="form-group row">
-				<label className="col-sm-2 col-form-label"><strong>Password</strong></label>
-				<div className="col-sm-10">
-					<input type="text" className="form-control" value={password} onChange={handlePassword} />
+			<div>
+				<label><strong>Password</strong></label>
+				<div>
+					<input type="text" value={password} onChange={handlePassword} />
 				</div>
 			</div>
-			<div className="form-group row">
-				<div className="col-sm-10">
-					<button type="button" className="btn btn-outline-secondary" onClick={handleClick}>Add New</button>
+			<div>
+				<div>
+					<button type="button" onClick={handleClick}>Add New</button>
 				</div>
 			</div>
 		</form>	

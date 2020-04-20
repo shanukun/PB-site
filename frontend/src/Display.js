@@ -10,7 +10,7 @@ const ShowBtn = (props) => {
 		props.togglePass(props.id);
 	}
 	return (
-		<button type="button" className="btn btn-sm btn-light" onClick={handleClick}>
+		<button type="button" onClick={handleClick}>
 			{ show ? "Hide" : "Show" }
 		</button>
 	);
@@ -64,13 +64,13 @@ function Display(props) {
 		<React.Fragment>
 			{ state.credentials.map((cred) => {
 				return (
-					<div className="card text-white bg-dark mb-3">
-						<div className="card-body">
-							<div className="row">
-								<div className="col-2"><strong>{cred.domain}</strong></div>
-								<div className="col-3">{cred.username}</div>
-								{/* <div className="col-sm">{ cred.password }</div> */}
-								<div className="col-sm">
+					<div>
+						<div>
+							<div>
+								<div><strong>{cred.domain}</strong></div>
+								<div>{cred.username}</div>
+								{/* <div>{ cred.password }</div> */}
+								<div>
 									{ passState.hasOwnProperty(cred.cred_id) ? 
 											passState[cred.cred_id]['show'] === true ? 
 												passState[cred.cred_id]['pass'] : 
@@ -78,11 +78,11 @@ function Display(props) {
 											cred.password 
 									}
 								</div>
-								<div className="col-md-auto">
+								<div>
 									<ShowBtn id={cred.cred_id} togglePass={togglePass} />
 								</div>
-								<div className="col-md-auto pl-0">
-									<button type="button" className="btn btn-sm btn-light">
+								<div>
+									<button type="button">
 										Copy
 									</button>
 								</div>
