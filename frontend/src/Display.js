@@ -17,6 +17,18 @@ const ShowBtn = (props) => {
 	);
 }
 
+const CopyBtn = (props) => {
+	const handleClick = () => {
+		props.copyPass(props.id);
+	}
+
+	return (
+		<button type="button" onClick={handleClick}>
+			Copy
+		</button>
+	);
+}
+
 function Display(props) {
 	const { state } = React.useContext(Store);
 	const [passState, setPassState] = React.useState({});
@@ -33,6 +45,16 @@ function Display(props) {
 		}
 	}
 
+	const copyPass =  async (id) => {
+		let pass = '';
+		if (passState.hasOwnProperty(id)) {
+			pass = passState[id]['pass'];
+		} else {
+			pass = await fetchPassword(id, false);
+		}
+		navigator.clipboard.writeText(pass);
+	}
+
 	const changePassList = (id, showState) => {
 		setPassState(passState => ({
 			...passState,
@@ -43,18 +65,19 @@ function Display(props) {
 		}));
 	}
 
-	const fetchPassword = async (id) => {
+	const fetchPassword = async (id, show=true) => {
 		const data = await fetch(API, {
 			method: 'POST',
 			body: JSON.stringify({ "key" : props.pass,
 								   "cred_id": id })
 		});
 		const dataJson = await data.json();
-		addPassToList(id, dataJson.password);
+		addPassToList(id, dataJson.password, show);
+		return dataJson.password;
 	}
 
-	const addPassToList = (id, pass) => {
-		const passObject = {pass: pass, show: true};
+	const addPassToList = (id, pass, show) => {
+		const passObject = {pass: pass, show: show};
 		setPassState(passState => ({
 			...passState,
 			[id]: passObject
@@ -80,9 +103,7 @@ function Display(props) {
 							<ShowBtn id={cred.cred_id} togglePass={togglePass} />
 						</div>
 						<div>
-							<button type="button">
-								Copy
-							</button>
+							<CopyBtn id={cred.cred_id} copyPass={copyPass} />
 						</div>
 					</div>
 				);
