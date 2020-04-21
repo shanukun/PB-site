@@ -52,7 +52,7 @@ func newEntry(w http.ResponseWriter, r *http.Request) {
 
 func setHeader(w *http.ResponseWriter, method int) {
 	(*w).Header().Set("Content-Type", "applications/x-www-form-urlencoded")
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:5000")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	switch method {
