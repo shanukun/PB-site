@@ -1,7 +1,7 @@
 import React from 'react';
 import './New.css';
 
-const API = "http://localhost:8000/api/new";
+const GoAPI = "http://localhost:8000/api/new";
 
 function New(props) {
 	const [domain, setDomain] = React.useState('');
@@ -13,7 +13,7 @@ function New(props) {
 	const handlePassword = (e) => { setPassword(e.target.value); };
 
 	const handleClick = async () => {
-		const req = await fetch(API, {
+		const req = await fetch(GoAPI, {
 			method: 'POST',
 			body: JSON.stringify({
 				"key": props.pass,

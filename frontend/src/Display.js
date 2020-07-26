@@ -2,7 +2,7 @@ import React from 'react';
 import { Store } from './Store';
 import './Display.css';
 
-const API = "http://localhost:8000/api/getpass";
+const GoAPI = "http://localhost:8000/api/getpass";
 
 const ShowBtn = (props) => {
 	const [show, setShow] = React.useState(false);
@@ -66,7 +66,7 @@ function Display(props) {
 	}
 
 	const fetchPassword = async (id, show=true) => {
-		const data = await fetch(API, {
+		const data = await fetch(GoAPI, {
 			method: 'POST',
 			body: JSON.stringify({ "key" : props.pass,
 								   "cred_id": id })

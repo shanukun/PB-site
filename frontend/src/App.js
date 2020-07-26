@@ -5,7 +5,7 @@ import New from './New';
 import { Route, Switch, Link } from 'react-router-dom';
 import './App.css';
 
-const API = "http://localhost:8000/api/";
+const GoAPI = "http://localhost:8000/api/";
 
 function App() {
 	const { dispatch } = React.useContext(Store);
@@ -21,7 +21,7 @@ function App() {
 	}
 
 	const fetchData = async () => {
-		const data = await fetch(API);
+		const data = await fetch(GoAPI);
 		const dataJson = await data.json();
 		console.log(dataJson);
 		dispatch({
